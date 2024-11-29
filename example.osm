@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<osm version="0.6" generator="osmconvert 0.8.10">
+	<bounds minlat="47.99977" minlon="7.868666" maxlat="48.000043" maxlon="7.869138"/>
+	<node id="25468" lat="47.9999337" lon="7.8690369"/>
+	<node id="25469" lat="47.999983" lon="7.8687752">
+		<tag k="natural" v="tree"/>
+	</node>
+	<node id="25470" lat="47.9999872" lon="7.8687337"/>
+	<node id="25471" lat="47.9999668" lon="7.8688745">
+		<tag k="natural" v="rock"/>
+	</node>
+	<node id="25472" lat="47.99988" lon="7.8687716"/>
+	<node id="25473" lat="47.9998757" lon="7.8689623"/>
+	<node id="25474" lat="47.999925" lon="7.8688409">
+		<tag k="information" v="guidepost"/>
+		<tag k="tourism" v="information"/>
+	</node>
+	<node id="25475" lat="48.0000241" lon="7.8688982"/>
+	<node id="25476" lat="47.9999615" lon="7.8689549"/>
+	<node id="25477" lat="48.0000206" lon="7.8687968"/>
+	<node id="25478" lat="47.999932" lon="7.8687542"/>
+	<node id="25479" lat="47.9998719" lon="7.8689334"/>
+	<node id="25480" lat="47.9999629" lon="7.8688094"/>
+	<node id="25481" lat="47.9999235" lon="7.8690999"/>
+	<node id="25482" lat="47.9998736" lon="7.8688278">
+		<tag k="denotation" v="natural_monument"/>
+		<tag k="leaf_cycle" v="evergreen"/>
+		<tag k="leaf_type" v="needleleaved"/>
+		<tag k="natural" v="tree"/>
+	</node>
+	<node id="25483" lat="47.9999049" lon="7.8688829"/>
+	<node id="25484" lat="47.9998982" lon="7.8689234"/>
+	<node id="25485" lat="47.9999849" lon="7.8688326"/>
+	<node id="25486" lat="47.9997914" lon="7.8688593"/>
+	<node id="25487" lat="47.9999281" lon="7.8689638">
+		<tag k="natural" v="tree"/>
+	</node>
+	<node id="25488" lat="47.9998511" lon="7.8689066"/>
+	<node id="25489" lat="47.9999105" lon="7.8689481"/>
+	<node id="25490" lat="47.9998817" lon="7.8687201"/>
+	<node id="25491" lat="47.9998332" lon="7.8688273"/>
+	<node id="25492" lat="47.9999018" lon="7.8689843"/>
+	<way id="696">
+		<nd ref="25485"/>
+		<nd ref="25480"/>
+		<nd ref="25478"/>
+		<nd ref="25472"/>
+		<nd ref="25491"/>
+		<nd ref="25488"/>
+		<nd ref="25483"/>
+		<nd ref="25476"/>
+		<nd ref="25468"/>
+		<tag k="highway" v="footway"/>
+	</way>
+	<way id="697">
+		<nd ref="25477"/>
+		<nd ref="25470"/>
+		<nd ref="25490"/>
+		<nd ref="25486"/>
+		<nd ref="25481"/>
+		<nd ref="25475"/>
+		<nd ref="25477"/>
+	</way>
+	<way id="698">
+		<nd ref="25489"/>
+		<nd ref="25484"/>
+		<nd ref="25479"/>
+		<nd ref="25473"/>
+		<nd ref="25492"/>
+		<nd ref="25489"/>
+		<tag k="name" v="Lake Whatever"/>
+		<tag k="natural" v="water"/>
+		<tag k="water" v="lake"/>
+	</way>
+	<relation id="59">
+		<member type="way" ref="697" role="outer"/>
+		<member type="way" ref="698" role="inner"/>
+		<tag k="landuse" v="meadow"/>
+		<tag k="type" v="multipolygon"/>
+	</relation>
+</osm>
