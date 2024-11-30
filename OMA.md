@@ -1,16 +1,23 @@
 # Description of the OMA File Format
 
-**Note: The Oma software and the formats described here currently are
-experimental and subject to change without notice.**
+***Note: [Oma](https://github.com/kumakyoo42/Oma) software (including
+additional programs like [Opa](https://github.com/kumakyoo42/Opa) and
+libraries) and [related file
+formats](https://github.com/kumakyoo42/oma-file-formats) are currently
+experimental and subject to change without notice.***
 
-## General Structure and Basic Data Formats
+## General Structure
 
-Oma files contain a binary representation of OSM data. An Oma file is
-divided into chunks. Each chunk contains data of a certain region of
-the world of a certain type (node, way, area etc.). Each chunks is
-divided into blocks and each block is divided into slices using
-pivotal tags. Slices contain the OSM elements. Slices can be stored in
-compressed version to reduce file size.
+Oma files contain a binary representation of [OSM
+data](https://wiki.openstreetmap.org/wiki/Planet.osm). A file in OMA
+format is divided into [chunks](#chunks). Each chunk contains data of
+a certain region of the world of a certain type (node, way, area
+etc.). Each chunks is divided into [blocks](#blocks) and each block is
+divided into [slices](#slices) using pivotal tags. Slices contain the
+[elements](#elements). Slices can be stored in compressed version to
+reduce file size.
+
+## Basic Data Formats
 
 All numbers in Oma files are stored in big endian order and in most
 cases they are signed. `byte` refers to a single byte number, `short`
@@ -18,29 +25,30 @@ to a two byte number, `int` to a four byte number and `long` to an
 eight byte number.
 
 At several places small unsigned numbers can be expected. These are
-saved as `smallints`: Numbers 0-254 are stored as a single (unsigned)
-`byte`, numbers 255-65534 are stored as a 255 byte followed by an
-(unsigned) `short` and all larger ints are saved by three 255 bytes
-followed by an `int`.
+saved as `smallints`: Values 0 to 254 are stored as a single (unsigned)
+`byte`, values 255 to 65534 are stored as a 255 byte followed by an
+(unsigned) `short` and all larger values are saved by three 255 bytes
+followed by a (signed) `int`.
 
 Geographical coordinates are stored in WGS84, multiplied by
 10<sup>7</sup> and rounded to the nearest integer. Appart from
 bounding boxes, coordinates are always stored delta encoded: Instead
-of the number itself, the difference from the last coordinate is
-saved, if it is small enough, that is if it is between -32767 and
-32767 inclusive. In this case the difference is saved as a `short`.
-Other numbers are saved as -32768 (as `short`) followed by the number
-(not the difference) as an `int`. Delta encoding starts anew at every
-slice with both coordinates initialised to 0.
+of the number itself, the difference from the last coordinate is used
+if it is small enough, that is if it is between -32767 and 32767
+inclusive. In this case the difference is saved as a `short`. Larger
+numbers are saved as the value -32768 (as `short`) followed by the
+number (not the difference) as an `int`. Delta encoding starts anew at
+every slice with both coordinates initialised to 0.
 
-Bounding boxes are saved as four `int`s: the coordinates of the lower
+Bounding boxes are saved as four `ints`: the coordinates of the lower
 left followed by the coordinates of the upper right corner of the box,
-longitude before latitude. All bounding boxes include their borders.
-Bounding boxes, containing the antimeridian, should have a maxlon
-value that is smaller than the minlon value. Such bounding boxes are
-not yet supported by the Oma software, but hopefully will be in the
-future. If there is no bounding box available, all four entries must
-be 2<sup>31</sup>-1, which is the maximum value of an `int`.
+longitude before latitude. All bounding boxes include the points on
+their borders. Bounding boxes, containing the antimeridian, should
+have a maxlon value that is smaller than the minlon value. Such
+bounding boxes are not yet supported by the Oma software, but
+hopefully will be in the future. If there is no bounding box
+available, all four entries must be 2<sup>31</sup>-1, which is the
+maximum value of an `int`.
 
 Strings are stored in UTF-8 encoding. A `smallint` precedes every
 `string`, denoting the number of bytes used in the UTF-8 encoding of the
@@ -54,10 +62,11 @@ Strings are stored in UTF-8 encoding. A `smallint` precedes every
       <header>
       (<chunk>|<chunktable>)+
 
-Each Oma file starts with a header, followed by chunks. Exactly one of
-these chunks is a special chunk - called chunktable - containing
-information about the normal chunks. This is typically the last chunk
-of the file, but could be anyone.
+Each Oma file starts with a header, followed by [chunks](#chunks).
+Exactly one of these chunks is a special chunk - called
+[chunktable](#chunktable-1) - containing information about the normal
+chunks. This is typically the last chunk of the file, but could be
+anyone.
 
     <header> ::=
       <magic number>
@@ -82,14 +91,14 @@ of the file, but could be anyone.
     <chunktable position> ::=
       long pos
 
-The header consists of a three byte magic number identifying
-OMA-files, a features byte, the bounding box and a pointer to the
-chunktable.
+The header consists of a three byte magic number identifying OMA-files
+(the ASCII characters O, M and A), a features byte, the bounding box
+and a pointer to the chunktable.
 
 The features byte is a bitfield, identifying some features of the
 file. Currently only the lower six bits are used; the remaining two
 bits are reserved for future use and must be 0. For a description of
-the bits of features byte see the following table:
+the bits of the features byte see the following table:
 
 | Bit | Value | Meaning                           |
 | --- | ----- |---------------------------------- |
@@ -107,6 +116,8 @@ unless no bounding box is given.
 
 The chunktable position is the file position where the chunktable
 starts.
+
+# Chunktable
 
     <chunktable> ::=
       int count
@@ -142,6 +153,16 @@ might come in the future).
     <chunk header> ::=
       int position
 
+The structure of a chunk is made up similar to the structure of the
+whole file: A short header followed by [blocks](#blocks), one of which
+is a special block containing the [blocktable](#blocktable-1). Again
+this is usually the last block but not necessarily.
+
+The header of a chunk consists only of one `int`, which is the
+position of the blocktable, *relative to the start of the chunk*.
+
+# Blocktable
+
     <blocktable> ::=
       smallint count
       <blocktable entry>*
@@ -150,21 +171,13 @@ might come in the future).
       int position
       string key
 
-The structure of a chunk is made up similar to the structure of the
-whole file: A short header followed by blocks, one of which is a
-special block containing the blocktable. Again this is usually the
-last block but not necessarily.
-
-The header of a chunk consists only of one int, which is the position
-of the blocktable, relative to the start of the chunk.
-
-The blocktable is made up of a smallint which gives the number of
+The blocktable is made up of a `smallint` which gives the number of
 entries of the blocktable, followed by these entries.
 
 Each blocktable entry contains the position of the block (relative to
-the start of the chunk) and the key of this block (e.g. 'highway',
-'amenity' and so on). If the block has no key, an empty string is
-used.
+the start of the chunk) and the key of this block (for example
+'highway', 'amenity' and so on). If the block has no key, an empty
+string is used.
 
 ### Blocks
 
@@ -175,6 +188,17 @@ used.
     <block header> ::=
       int position
 
+The structure of a block is yet similar to the structure of the whole
+file and the structure of a chunk: A short header, followed by
+[slices](#slices), one of which is a special slice containing the
+[slicetable](#slicetable-1). Again this is usually the last slice but
+not necessarily.
+
+The header of a block consists only of one `int`, which is the
+position of the slicetable, *relative to the start of the block*.
+
+# Slicetable
+
     <slicetable> ::=
       smallint count
       <slicetable entry>*
@@ -183,22 +207,14 @@ used.
       int position
       string value
 
-The structure of a block is yet similar to the structure of the whole
-file and the structure of a chunk: A short header, followed by slices,
-one of which is a special slice containing the slicetable. Again this
-is usually the last slice but not necessarily.
-
-The header of a block consists only of one int, which is the position
-of the slicetable, relative to the start of the block.
-
-The slicetable is made up of a smallint which gives the number of
+The slicetable is made up of a `smallint` which gives the number of
 entries of the slicetable, followed by these entries.
 
 Each slicetable entry contains the position of the slice (relative to
-the start of the block) and the value of this slice (e.g. if the key
-of the block is `highway', the value might be 'service' or 'footway'
-and so on). If the block has no key or the slice has no value, an
-empty string is used.
+the start of the block) and the value of this slice (for example if
+the key of the block is `highway', the value might be 'service' or
+'footway' and so on). If the block has no key or the slice has no
+value, an empty string is used.
 
 ### Slices
 
@@ -209,11 +225,12 @@ empty string is used.
     <element> ::=
       <geometry> <tags> <meta>
 
-At the beginning of each slice there is an int, denoting the number of
-elements of this slice, followed by the elements themselves. If slices
-are compressed (the lowest bit of the feature byte is 1), compression
-does not include the first four bytes of the slice. For compression
-the deflate algorithm of the ZLIB compression library is used.
+At the beginning of each slice there is an `int`, denoting the number
+of elements of this slice, followed by the [elements](elements)
+themselves. If slices are compressed (the lowest bit of the [feature
+byte](#file) is set), compression does not include the first four
+bytes of the slice. For compression the deflate algorithm of the ZLIB
+compression library is used.
 
 Each element consists of the geometry of the element (depending on the
 type of the chunk), followed by the tags of the elements, followed by
@@ -338,6 +355,10 @@ which is a converted version of the artifical OSM file
     000002f0  38 00 00 00 00 00 00 00  02 2a 41 00 00 00 00 17  |8........*A.....|
     00000300  d7 84 00 05 f5 e1 00 1d  cd 65 00                 |.........e.|
 
+You might compare this and the following descriptions to the
+[corresponding OPA file](/example.opa), which is a human readable
+representation of this binary data.
+
 ### Header
 
 The first 28 bytes form the header:
@@ -345,20 +366,21 @@ The first 28 bytes form the header:
     00000000  4f 4d 41 03 04 b0 a9 c4  1c 9c 2f 04 04 b0 bc 34  |OMA......./....4|
     00000010  1c 9c 39 ae 00 00 00 00  00 00 02 a3              |..9.........|
 
-After the three byte magic number 'OMA' follows the feature byte (0x03)
-with two set bits: Bit 0 (slices are compressed) and Bit 1 (IDs are
-preserved).
+After the three byte magic number 'OMA' follows the feature byte
+(0x03) with two bits set: Bit 0 (slices are compressed) and bit 1 (IDs
+are preserved).
 
-The next 16 bytes are the bounding box as four `int`s:
-0x04B0A9C4=78686660, 0x1c9c2f04=479997700, 0x04b0bc34=78691380,
-0x1C9C39AE=480000430. Which is 7.868666, 47.99977, 7.869138, 48.000043.
+The next 16 bytes define the bounding box as four `ints`:
+`0x04B0A9C4`=78686660, `0x1c9c2f04`=479997700, `0x04b0bc34`=78691380,
+`0x1C9C39AE`=480000430, which is the bounding box 7.868666, 47.99977,
+7.869138, 48.000043.
 
-And the last 8 bytes are a pointer to the position of the chunktable
-at position 0x2a3.
+The last 8 bytes are a pointer to the position of the chunktable
+at position `0x2a3`.
 
 ### Chunktable
 
-The chunktable starts at byte 0x2a3:
+The chunktable starts at byte `0x2a3`:
 
     000002a0           00 00 00 04 00  00 00 00 00 00 00 1c 4e     |............N|
     000002b0  03 93 87 00 1c 03 a1 80  04 c4 b4 00 1c 9c 38 00  |..............8.|
@@ -368,7 +390,7 @@ The chunktable starts at byte 0x2a3:
     000002f0  38 00 00 00 00 00 00 00  02 2a 41 00 00 00 00 17  |8........*A.....|
     00000300  d7 84 00 05 f5 e1 00 1d  cd 65 00                 |.........e.|
 
-The first four bytes give the number of entries, four in this case.
+The first four bytes give the number of entries, 4 in this case.
 Each entry consists of a file position (8 bytes) a type (1 byte) and a
 bounding box (16 bytes). This is the deciphered chunktable:
 
@@ -381,13 +403,13 @@ bounding box (16 bytes). This is the deciphered chunktable:
 
 ### Chunk 1
 
-The first chunk starts at 0x01c:
+The first chunk starts at `0x01c`:
 
     00000010                                       00 00 01 0f  |            ....|
 
 The first four bytes give the position of the blocktable *relative to
-the start of the chunk*. Thus you have to add 0x01c + 0x10f = 0x12b to
-get the file position of the blocktable.
+the start of the chunk*. Thus you have to add `0x01c` + `0x10f` =
+`0x12b` to get the absolute file position of the blocktable.
 
 ### Blocktable
 
@@ -395,10 +417,11 @@ get the file position of the blocktable.
     00000130  07 6e 61 74 75 72 61 6c  00 00 00 bc 07 74 6f 75  |.natural.....tou|
     00000140  72 69 73 6d                                       |rism|
 
-The blocktable starts with a small number (0x02), thus it contains two
-entries. Each entry is an int (giving the position inside the chunk),
-followed by a string (smallint, followed by UTF8-characters), giving
-the key of the block. This is the blocktable deciphered:
+The blocktable starts with a `smallint` (`0x02`), thus it contains two
+entries. Each entry is an `int` (giving the position inside the
+chunk), followed by a `string` (`smallint`, followed by
+UTF8-characters), giving the key of the block. This is the blocktable
+deciphered:
 
 | block | position | key     |
 | ----- | -------- | ------- |
@@ -407,22 +430,22 @@ the key of the block. This is the blocktable deciphered:
 
 ### Block 1
 
-Block 1 starts at 0x1c + 0x04 = 0x20:
+Block 1 starts at `0x1c` + `0x04` = `0x20`:
 
     00000020  00 00 00 a9                                       |....            |
 
 The first four bytes give the position of the slicetable *relative to
-the start of the chunk*. Thus you have to add 0x020 + 0x0a9 = 0x0c9 to
-get the file position of the slicetable.
+the start of the chunk*. Thus you have to add `0x020` + `0x0a9` =
+`0x0c9` to get the absolute file position of the slicetable.
 
 ### Slicetable
 
     000000c0                              02 00 00 00 04 04 74  |         ......t|
     000000d0  72 65 65 00 00 00 7e 00                           |ree...~.|
 
-The slice table starts with a small number (0x02), denoting the number
-of entries of the table. Each entry is an int (giving the position
-inside the block), followed by a string (smallint, followed by
+The slice table starts with a `smallint` (`0x02`), denoting the number
+of entries of the table. Each entry is an `int` (giving the position
+inside the block), followed by a `string` (`smallint`, followed by
 UTF8-characters), giving the value of the slice. This is the
 slicetable deciphered:
 
@@ -433,7 +456,7 @@ slicetable deciphered:
 
 ### Slice 1
 
-Slice 1 starts at 0x20 + 0x04 = 0x24:
+Slice 1 starts at `0x20` + `0x04` = `0x24`:
 
     00000020              00 00 00 03  78 da 6b 60 60 d9 b0 8e  |    ....x.k``...|
     00000030  a3 81 41 66 8e 79 18 23  7b 5e 62 49 69 51 62 0e  |..Af.y.#{^bIiQb.|
@@ -442,7 +465,7 @@ Slice 1 starts at 0x20 + 0x04 = 0x24:
     00000090  e8 62 0d 60 52 c4 6a 77  3f 00 11 f1 32 69        |.b.`R.jw?...2i|
 
 The first four bytes give the number of elements in this slice, namely
-three. The rest of the slice is compressed and thus not human
+3. The rest of the slice is compressed and thus not human
 readable. The decompressed version looks like this:
 
     00000020                           80 00 04 b0 ae 08 80 00  |................|
@@ -458,23 +481,22 @@ readable. The decompressed version looks like this:
     000000c0  00 00 00 00 63 8f
 
 As this is part of a node chunk, the elements are all nodes. Each node
-starts with its coordinates delta encoded. 0x8000 means, there is no
-delta, but just the complete number, the next four bytes: 0x04b0ae08 =
-78687752, which is longitude 7.8687752. Next latitude
-0x1c9c3756 = 479999830 ~ 47.999983 follows.
+starts with its coordinates delta encoded. `0x8000` means, the delta
+is too large and thus the complete number is saved in the next four
+bytes: `0x04b0ae08` = 78687752, which is longitude 7.8687752. Next
+latitude `0x1c9c3756` = 479999830, which is 47.999983 follows.
 
-The next byte (0x01) gives the number of tags. These tags follow as
-key-value pairs (here natural=tree).
+The next `smallint` (`0x01`) gives the number of tags. These tags
+follow as key-value pairs (here natural=tree).
 
 After this, the meta data is saved. In this file the meta data
-consists only of the ID (0x000000000000637d = 25469).
+consists only of the ID (`0x000000000000637d` = 25469).
 
-The coordinates of the next number are really delta encoded: 0x020e
-(=526) and 0xfbba (=-1094). Thus the coordinates of this element are
-78687752+526 = 78688278 ~ 7.8688278 and 479999830-1094 = 479998736 ~
-47.9998736. It contains four tags: leaf_cycle=evergreen, natural=tree,
+The coordinates of the next node element are close enough to the
+former node to use deltas: `0x020e` (=526) and `0xfbba` (=-1094). Thus
+the coordinates of this element are 78687752+526 = 78688278 which is
+longitude 7.8688278 and 479999830-1094 = 479998736 which is latitude
+47.9998736.
+
+This element contains 4 tags: leaf_cycle=evergreen, natural=tree,
 denotation=natural_monument and leaf_type=needleleaved.
-
-And so on - for more details have a look at the [example OPA
-file](/example.opa) file, which is a human readable translation of the
-OMA file.
