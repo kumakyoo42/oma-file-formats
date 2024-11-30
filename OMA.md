@@ -355,7 +355,7 @@ which is a converted version of the artifical OSM file
     000002f0  38 00 00 00 00 00 00 00  02 2a 41 00 00 00 00 17  |8........*A.....|
     00000300  d7 84 00 05 f5 e1 00 1d  cd 65 00                 |.........e.|
 
-You might compare this and the following descriptions to the
+You might compare this and the following descriptions with the
 [corresponding OPA file](/example.opa), which is a human readable
 representation of this binary data.
 
@@ -367,7 +367,7 @@ The first 28 bytes form the header:
     00000010  1c 9c 39 ae 00 00 00 00  00 00 02 a3              |..9.........|
 
 After the three byte magic number 'OMA' follows the feature byte
-(0x03) with two bits set: Bit 0 (slices are compressed) and bit 1 (IDs
+(`0x03`) with two bits set: Bit 0 (slices are compressed) and bit 1 (IDs
 are preserved).
 
 The next 16 bytes define the bounding box as four `ints`:
