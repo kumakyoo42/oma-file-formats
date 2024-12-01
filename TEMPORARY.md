@@ -102,7 +102,7 @@ are not set), are omitted.
 Coordinates can take to different appearances: They are either stored
 as two ints or, in case of ways and when not known, as the id of the
 node which contains the coordinates. To avoid confusion,
-0x7f00000000000000 is added to the node id. This ensures, that node id
+`0x7f00000000000000` is added to the node id. This ensures, that node id
 and lon/lat coordinates cannot be confused.
 
     <coords> ::=
@@ -124,9 +124,9 @@ oma files: Again Javas UTF8 version is used.
 The intermediate format created in the second step of Oma ist quite
 similar to the final Oma format: Header and chunktable are identical.
 
-  <chunk> ::=
-    int count
-    <element>*
+    <chunk> ::=
+      int count
+      <element>*
 
 The chunks themselves aren't divided into blocks and slices, but just
 contain the number of elements followed by the elements. Elements are
