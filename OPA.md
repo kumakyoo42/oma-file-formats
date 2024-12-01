@@ -8,7 +8,7 @@ experimental and subject to change without notice.***
 
 ## General Structure
 
-Files in OPA file format area text files. Empty lines are ignored.
+Files in OPA format are text files. Empty lines are ignored.
 Everything after a hashtag (#), including the hashtag, is ignored as
 well. Lines may be indented for better readablity. The first line
 should start with `#OPA` for better recognition of OPA files.
@@ -140,10 +140,10 @@ escaped by a backslash:
 
 | character | escape sequence |
 | --------- | --------------- |
-| #         | \x              |
-| *newline* | \n              |
-| =         | \=              |
-| \         | \\              |
+| #         | \\x             |
+| *newline* | \\n             |
+| =         | \\=             |
+| \         | \\\             |
 
 Metadata is only included if listed in the `<features list>`.
 
