@@ -70,6 +70,7 @@ anyone.
 
     <header> ::=
       <magic number>
+      byte version
       <features byte>
       <bounding box>
       <chunktable position>
@@ -92,8 +93,10 @@ anyone.
       long pos
 
 The header consists of a three byte magic number identifying OMA-files
-(the ASCII characters O, M and A), a features byte, the bounding box
-and a pointer to the chunktable.
+(the ASCII characters O, M and A), a version byte, a features byte, the
+bounding box and a pointer to the chunktable.
+
+The version byte is currently always 0 indicating experimental stage.
 
 The features byte is a bitfield, identifying some features of the
 file. Currently only the lower six bits are used; the remaining two
