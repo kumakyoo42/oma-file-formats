@@ -31,6 +31,7 @@ fractional digits. Longitude is given before latitude.
     <header> ::=
       "Features:" <features list>
       "BoundingBox:" <bounding box>
+      <typetable>
       "Chunks:" <number>
 
 The `<features list>` is a comma separated list of zero or more of the
@@ -42,7 +43,30 @@ The `<bounding box>` gives the bounding box of the whole file and is
 given as four comma seperated numbers (lower left corner, upper right
 corner).
 
+Next, the typetable follows, see below.
+
 The last item in the head is the number of chunks given in the file.
+
+### Typetable
+
+    <typetable> ::=
+      "Types:" <number>
+      <typeentry>*
+
+    <typeentry> ::=
+      "Type:" <type>
+      "Keys:" <number>
+      <key with values>*
+
+    <key with values> ::=
+      "Key:" <key>
+      "Values:" <number>
+      <value>*
+
+The typetable consists of the number of types, followed by an entry
+for each type. Each entry consists of the type, the number of keys and
+a list of keys with values. Each entry in this list consists of a key
+the number of values and the values.
 
 ### Chunks
 

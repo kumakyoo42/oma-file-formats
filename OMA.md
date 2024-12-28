@@ -74,6 +74,7 @@ anyone.
       <features byte>
       <bounding box>
       <chunktable position>
+      <typetable>
 
     <magic number> ::=
       byte 'O'
@@ -94,7 +95,7 @@ anyone.
 
 The header consists of a three byte magic number identifying OMA-files
 (the ASCII characters O, M and A), a version byte, a features byte, the
-bounding box and a pointer to the chunktable.
+bounding box, a pointer to the chunktable and a typetable.
 
 The version byte is currently always 0 indicating experimental stage.
 
@@ -104,7 +105,7 @@ bits are reserved for future use and must be 0. For a description of
 the bits of the features byte see the following table:
 
 | Bit | Value | Meaning                           |
-| --- | ----- |---------------------------------- |
+|-----|-------|-----------------------------------|
 |   0 |     1 | all slices are compressed         |
 |   1 |     2 | elements contain id               |
 |   2 |     4 | elements contain version          |
@@ -119,6 +120,34 @@ unless no bounding box is given.
 
 The chunktable position is the file position where the chunktable
 starts.
+
+### Typetable
+
+    <typetable> ::=
+      smallint count
+      <typetable entry>*
+
+    <typetable entry> ::=
+      byte type
+      smallint count
+      <key with values>*
+
+    <key with values> ::=
+      string key
+      smallint count
+      <value>*
+
+    <value> ::=
+      string value
+
+The first item in the typetable is the number of types in the
+typetable. After this item the entries follow.
+
+Each entry is a list of keys with values, preceeded by the type and
+the number of entries in this list.
+
+A key with values is the key followed by the count of values, followed
+by a list of values.
 
 # Chunktable
 
