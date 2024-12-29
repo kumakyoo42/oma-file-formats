@@ -149,7 +149,7 @@ the number of entries in this list.
 A key with values is the key followed by the count of values, followed
 by a list of values.
 
-# Chunktable
+### Chunktable
 
     <chunktable> ::=
       int count
@@ -193,7 +193,7 @@ this is usually the last block but not necessarily.
 The header of a chunk consists only of one `int`, which is the
 position of the blocktable, *relative to the start of the chunk*.
 
-# Blocktable
+### Blocktable
 
     <blocktable> ::=
       smallint count
@@ -229,7 +229,7 @@ not necessarily.
 The header of a block consists only of one `int`, which is the
 position of the slicetable, *relative to the start of the block*.
 
-# Slicetable
+### Slicetable
 
     <slicetable> ::=
       smallint count
