@@ -112,7 +112,7 @@ the bits of the features byte see the following table:
 |   3 |     8 | elements contain timestamp        |
 |   4 |    16 | elements contain changeset        |
 |   5 |    32 | elements contain user information |
-|   6 |    64 | reserved, must be 0               |
+|   6 |    64 | each element added only once      |
 |   7 |   128 | reserved, must be 0               |
 
 All elements of the file must be completely inside the bounding box

@@ -36,8 +36,8 @@ fractional digits. Longitude is given before latitude.
 
 The `<features list>` is a comma separated list of zero or more of the
 following words: `zipped`, `id`, `version`, `timestamp`, `changeset`,
-`user`. Each of these words denotes that the corresponding bit of the
-feature byte is set.
+`user`, `once`. Each of these words denotes that the corresponding bit
+of the feature byte is set.
 
 The `<bounding box>` gives the bounding box of the whole file and is
 given as four comma seperated numbers (lower left corner, upper right
