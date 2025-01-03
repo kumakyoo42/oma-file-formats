@@ -122,7 +122,8 @@ oma files: Again Javas UTF8 version is used.
 ## tmp2
 
 The intermediate format created in the second step of Oma ist quite
-similar to the final Oma format: Header and chunktable are identical.
+similar to the final Oma format: Header and chunktable are identical,
+but there is no typetable.
 
     <chunk> ::=
       int count
