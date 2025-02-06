@@ -12,47 +12,46 @@ Oma files contain a binary representation of [OSM
 data](https://wiki.openstreetmap.org/wiki/Planet.osm). A file in OMA
 format is divided into [chunks](#chunks). Each chunk contains data of
 a certain region of the world of a certain type (node, way, area
-etc.). Each chunks is divided into [blocks](#blocks) and each block is
+etc.). Each chunk is divided into [blocks](#blocks) and each block is
 divided into [slices](#slices) using pivotal tags. Slices contain the
 [elements](#elements). Slices can be stored in compressed version to
 reduce file size.
 
 ## Basic Data Formats
 
-All numbers in Oma files are stored in big endian order and in most
-cases they are signed. `byte` refers to a single byte number, `short`
-to a two byte number, `int` to a four byte number and `long` to an
-eight byte number.
+All numbers in Oma files are stored in big endian order, and in most
+cases they are signed. `byte` refers to a single-byte number, `short`
+to a two-byte number, `int` to a four-byte number and `long` to an
+eight-byte number.
 
-At several places small unsigned numbers can be expected. These are
-saved as `smallints`: Values 0 to 254 are stored as a single (unsigned)
-`byte`, values 255 to 65534 are stored as a 255 byte followed by an
-(unsigned) `short` and all larger values are saved by three 255 bytes
-followed by a (signed) `int`.
+In several places, you can expect to see small unsigned numbers. These
+are stored as `smallints`: Values 0 to 254 are stored as a single
+(unsigned) `byte`, values 255 to 65534 are stored as a 255 byte
+followed by an (unsigned) `short` and all larger values are stored as
+three 255 bytes followed by a (signed) `int`.
 
-Geographical coordinates are stored in WGS84, multiplied by
-10<sup>7</sup> and rounded to the nearest integer. Appart from
-bounding boxes, coordinates are always stored delta encoded: Instead
-of the number itself, the difference from the last coordinate is used
-if it is small enough, that is if it is between -32767 and 32767
-inclusive. In this case the difference is saved as a `short`. Larger
-numbers are saved as the value -32768 (as `short`) followed by the
-number (not the difference) as an `int`. Delta encoding starts anew at
-every slice with both coordinates initialised to 0.
+Geographic coordinates are stored in WGS84, multiplied by
+10<sup>7</sup> and rounded to the nearest integer. Except for bounding
+boxes, coordinates are always stored delta encoded: Instead of the
+number itself, the difference from the last coordinate is used if it
+is small enough, that is if it is between -32767 and 32767 inclusive.
+In this case, the difference is stored as a `short`. Larger numbers
+are stored as the value -32768 (as `short`) followed by the number
+(not the difference) as an `int`. The delta encoding starts anew at
+each slice with both coordinates initialised to 0.
 
-Bounding boxes are saved as four `ints`: the coordinates of the lower
-left followed by the coordinates of the upper right corner of the box,
-longitude before latitude. All bounding boxes include the points on
-their borders. Bounding boxes, containing the antimeridian, should
-have a maxlon value that is smaller than the minlon value. Such
-bounding boxes are not yet supported by the Oma software, but
-hopefully will be in the future. If there is no bounding box
-available, all four entries must be 2<sup>31</sup>-1, which is the
-maximum value of an `int`.
+Bounding boxes are stored as four `ints`: the coordinates of the lower
+left corner followed by the coordinates of the upper right corner of
+the box, longitude before latitude. All bounding boxes include the
+points at their edges. Bounding boxes containing the antimeridian
+should have a maxlon value less than the minlon value. Such bounding
+boxes are not yet supported by the Oma software, but hopefully will be
+in the future. If no bounding box is available, all four entries must
+be 2<sup>31</sup>-1, which is the maximum value of an `int`.
 
-Strings are stored in UTF-8 encoding. A `smallint` precedes every
-`string`, denoting the number of bytes used in the UTF-8 encoding of the
-`string`.
+Strings are stored in UTF-8 encoding. Each `string` is preceded by a
+`smallint` representing the number of bytes used in the UTF-8 encoding
+of the `string`.
 
 ## Grammar
 
@@ -62,11 +61,11 @@ Strings are stored in UTF-8 encoding. A `smallint` precedes every
       <header>
       (<chunk>|<chunktable>)+
 
-Each Oma file starts with a header, followed by [chunks](#chunks).
+Every Oma file starts with a header, followed by [chunks](#chunks).
 Exactly one of these chunks is a special chunk - called
-[chunktable](#chunktable-1) - containing information about the normal
-chunks. This is typically the last chunk of the file, but could be
-anyone.
+[chunktable](#chunktable-1) - which contains information about the normal
+chunks. This is usually the last chunk of the file, but could be
+any chunk.
 
     <header> ::=
       <magic number>
@@ -93,16 +92,15 @@ anyone.
     <chunktable position> ::=
       long pos
 
-The header consists of a three byte magic number identifying OMA-files
+The header consists of a three-byte magic number identifying OMA files
 (the ASCII characters O, M and A), a version byte, a features byte, the
 bounding box, a pointer to the chunktable and a typetable.
 
 The version byte is currently always 0 indicating experimental stage.
 
 The features byte is a bitfield, identifying some features of the
-file. Currently only the lower six bits are used; the remaining two
-bits are reserved for future use and must be 0. For a description of
-the bits of the features byte see the following table:
+file. The bits of the features byte are described in the following
+table:
 
 | Bit | Value | Meaning                           |
 |-----|-------|-----------------------------------|
@@ -112,10 +110,10 @@ the bits of the features byte see the following table:
 |   3 |     8 | elements contain timestamp        |
 |   4 |    16 | elements contain changeset        |
 |   5 |    32 | elements contain user information |
-|   6 |    64 | each element added only once      |
-|   7 |   128 | reserved, must be 0               |
+|   6 |    64 | each element is added only once   |
+|   7 |   128 | the file is a changefile          |
 
-All elements of the file must be completely inside the bounding box
+All elements of the file must be completely inside the bounding box,
 unless no bounding box is given.
 
 The chunktable position is the file position where the chunktable
@@ -168,7 +166,7 @@ starts, followed by two entries (type and bounding box) which describe
 the nature of the elements in this chunk.
 
 Currently the type of a chunk must be one of ('N' for nodes, 'W' for
-ways and 'A' for areas). It is possible and highly likely, that
+ways, 'A' for areas and 'C' for collections). It is possible that
 further types will be defined in the future.
 
 All elements of a chunk must be completely contained in the bounding
@@ -187,8 +185,8 @@ might come in the future).
 
 The structure of a chunk is made up similar to the structure of the
 whole file: A short header followed by [blocks](#blocks), one of which
-is a special block containing the [blocktable](#blocktable-1). Again
-this is usually the last block but not necessarily.
+is a special block, which contains the [blocktable](#blocktable-1). Again
+this is usually the last block, but not necessarily.
 
 The header of a chunk consists only of one `int`, which is the
 position of the blocktable, *relative to the start of the chunk*.
@@ -203,8 +201,8 @@ position of the blocktable, *relative to the start of the chunk*.
       int position
       string key
 
-The blocktable is made up of a `smallint` which gives the number of
-entries of the blocktable, followed by these entries.
+The blocktable consists of a `smallint` that specifies the number of
+entries in the blocktable, followed by the entries themselves.
 
 Each blocktable entry contains the position of the block (relative to
 the start of the chunk) and the key of this block (for example
@@ -221,9 +219,9 @@ string is used.
       int position
 
 The structure of a block is yet similar to the structure of the whole
-file and the structure of a chunk: A short header, followed by
-[slices](#slices), one of which is a special slice containing the
-[slicetable](#slicetable-1). Again this is usually the last slice but
+file and the structure of a chunk: A short header followed by
+[slices](#slices), one of which is a special slice. which contains the
+[slicetable](#slicetable-1). Again this is usually the last slice, but
 not necessarily.
 
 The header of a block consists only of one `int`, which is the
@@ -239,8 +237,8 @@ position of the slicetable, *relative to the start of the block*.
       int position
       string value
 
-The slicetable is made up of a `smallint` which gives the number of
-entries of the slicetable, followed by these entries.
+The slicetable consists of a `smallint` that specifies the number of
+entries of the slicetable, followed by the entries themselves.
 
 Each slicetable entry contains the position of the slice (relative to
 the start of the block) and the value of this slice (for example if
@@ -283,6 +281,14 @@ meta information.
       smallint holecount
       <hole>*
 
+    <geometry> (collection) ::=
+      smallint count of nodes
+      <geometry> (node)*
+      smallint count of ways
+      <geometry> (way)*
+      smallint count of areas
+      <geometry> (area)*
+
     <hole> ::=
       smallint count
       <coord>*
@@ -296,11 +302,15 @@ The geometry of a node is just its coordinate pair.
 The geometry of a way is a list of coordinate pairs preceeded by the
 count of these pairs.
 
-An area consists of an outer ring and optional an arbitrary number of
-holes. The outer ring is saved as a list of coordinate pairs preceeded
-by the count of these pairs. Divergent of OSM convention the starting
-point of this ring is not repeated at the end. Holes are saved the
-same way.
+An area consists of an outer ring and optionally an arbitrary number
+of holes. The outer ring is saved as a list of coordinate pairs
+preceeded by the count of these pairs. Divergent of OSM convention the
+starting point of this ring is not repeated at the end. Holes are
+saved the same way.
+
+A collection is a list of nodes followed by a list of ways, followed
+by a list of areas. Each list is preceded by the number of elements of
+the list.
 
     <tags> ::=
       smallint count
@@ -310,7 +320,7 @@ same way.
       string key
       string value
 
-Tags are saved as a list of key-value-pairs, preceded by the count of
+Tags are saved as a list of key-value pairs, preceded by the count of
 these pairs. Each pair consists of two strings, the key and the value
 of the tag. Key and value of block and slice, if any, must be repeated
 here.
@@ -332,6 +342,10 @@ Meta information consists of the id, the version and the timestamp
 and uid and username of the user who did the most recent change.
 
 ## Example
+
+*Note: This example is slightly outdated: The `version byte` and the
+`typetable` are missing and it does not contain an example for a
+collection.*
 
 The following hexdump is taken from [example OMA file](/example.oma),
 which is a converted version of the artifical OSM file

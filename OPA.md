@@ -1,4 +1,4 @@
-# Description of the OMA File Format
+# Description of the OPA File Format
 
 ***Note: [Oma](https://github.com/kumakyoo42/Oma) software (including
 additional programs like [Opa](https://github.com/kumakyoo42/Opa) and
@@ -8,16 +8,16 @@ experimental and subject to change without notice.***
 
 ## General Structure
 
-Files in OPA format are text files. Empty lines are ignored.
-Everything after a hashtag (#), including the hashtag, is ignored as
-well. Lines may be indented for better readablity. The first line
-should start with `#OPA` for better recognition of OPA files.
+Files in OPA format are text files. Blank lines are ignored. Anything
+after a hash (#), including the hash, is also ignored. Lines can be
+indented for better readability. The first line should start with
+`#OPA` for better recognition of OPA files.
 
-With the exception of tag pairs every line consists of a name followed
-by a colon (without whitespace in between), which may be followed by
-some other information, depending on the name.
+Except for tag pairs, each line consists of a name followed by a colon
+(without whitespace in between), which may be followed by some other
+information, depending on the name.
 
-All coordinates in opa files are in WGS84, with a precision of 7
+All coordinates in Opa files are in WGS84, with a precision of 7
 fractional digits. Longitude is given before latitude.
 
 ## Grammar
@@ -36,8 +36,8 @@ fractional digits. Longitude is given before latitude.
 
 The `<features list>` is a comma separated list of zero or more of the
 following words: `zipped`, `id`, `version`, `timestamp`, `changeset`,
-`user`, `once`. Each of these words denotes that the corresponding bit
-of the feature byte is set.
+`user`, `once`. Each of these words indicates that the corresponding
+bit of the feature byte is set.
 
 The `<bounding box>` gives the bounding box of the whole file and is
 given as four comma seperated numbers (lower left corner, upper right
@@ -135,6 +135,23 @@ value, the value of the slice must be a minus sign.
       "Holes:" <number>
         <hole>*
 
+    <geometry> (Collection) ::=
+      "Nodes:" <number>
+      (
+        "Role:" <role>
+        <geometry> (Node)
+      )*
+      "Ways:" <number>
+      (
+        "Role:" <role>
+        <geometry> (Way)
+      )*
+      "Areas:" <number>
+      (
+        "Role:" <role>
+        <geometry> (Area)
+      )*
+
     <hole> ::=
       "Hole:"
         <coordinate>*
@@ -154,13 +171,15 @@ value, the value of the slice must be a minus sign.
       "User:" <number> "(" <name> ")"
 
 Which geometry is used depends on the type of the surrounding chunk.
-Ways and areas contain lists of coordinates. In this case each
-coordinate is written on a single line.
+Ways, areas and collections contain lists of coordinates. In this case
+each coordinate is written on a single line.
 
 Tags are listed, one after another, each on a separate line. Key and
 value must be separated by a space followed by an equals sign,
-followed by a space. In keys and values the following characters are
-escaped by a backslash:
+followed by a space.
+
+In keys and values of tags, as well as in roles in a collection, the
+following characters are escaped by a backslash:
 
 | character | escape sequence |
 | --------- | --------------- |
@@ -172,5 +191,9 @@ escaped by a backslash:
 Metadata is only included if listed in the `<features list>`.
 
 ## Example
+
+*Note: This example is slightly outdated: The `version byte` and the
+`typetable` are missing and it does not contain an example for a
+collection.*
 
 See [example.opa](/example.opa).
