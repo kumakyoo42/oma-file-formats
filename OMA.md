@@ -2,9 +2,9 @@
 
 ***Note: [Oma](https://github.com/kumakyoo42/Oma) software (including
 additional programs like [Opa](https://github.com/kumakyoo42/Opa) and
-libraries) and [related file
-formats](https://github.com/kumakyoo42/oma-file-formats) are currently
-experimental and subject to change without notice.***
+[libraries](https://github.com/kumakyoo42/OmaLibJava)) and related
+file formats are currently experimental and subject to change without
+notice.***
 
 ## General Structure
 
@@ -111,7 +111,7 @@ table:
 |   4 |    16 | elements contain changeset        |
 |   5 |    32 | elements contain user information |
 |   6 |    64 | each element is added only once   |
-|   7 |   128 | the file is a changefile          |
+|   7 |   128 | *reserved, must be 0*             |
 
 All elements of the file must be completely inside the bounding box,
 unless no bounding box is given.
@@ -171,8 +171,7 @@ further types will be defined in the future.
 
 All elements of a chunk must be completely contained in the bounding
 box. If no bounding box is given, the chunk may contain any element
-including elements without geographic location (not yet possible, but
-might come in the future).
+including elements without geographic location.
 
 ### Chunks
 
@@ -253,7 +252,7 @@ value, an empty string is used.
       <element>*
 
     <element> ::=
-      <geometry> <tags> <meta>
+      <geometry> <tags> <members> <meta>
 
 At the beginning of each slice there is an `int`, denoting the number
 of elements of this slice, followed by the [elements](elements)
@@ -282,12 +281,7 @@ meta information.
       <hole>*
 
     <geometry> (collection) ::=
-      smallint count of nodes
-      <geometry> (node)*
-      smallint count of ways
-      <geometry> (way)*
-      smallint count of areas
-      <geometry> (area)*
+      <bounding box>
 
     <hole> ::=
       smallint count
@@ -308,9 +302,8 @@ preceeded by the count of these pairs. Divergent of OSM convention the
 starting point of this ring is not repeated at the end. Holes are
 saved the same way.
 
-A collection is a list of nodes followed by a list of ways, followed
-by a list of areas. Each list is preceded by the number of elements of
-the list.
+A collection is just a bounding box. All elements of the collection
+are inside of this bounding box, unless no bounding box is given.
 
     <tags> ::=
       smallint count
@@ -325,6 +318,19 @@ these pairs. Each pair consists of two strings, the key and the value
 of the tag. Key and value of block and slice, if any, must be repeated
 here.
 
+    <members> ::=
+      smallint count
+      <member>*
+
+    <member> ::=
+      long     id
+      string   role
+      smallint position
+
+Each member entry consists of the id of the collection this element
+belongs to, the role it playes and the position, which can be used to
+sort the elements of a collection.
+
     <meta> ::=
       long     id
       smallint version
@@ -334,8 +340,9 @@ here.
       string   username
 
 Meta information is only stored if the corresponding bits in the
-features byte are set. Otherwise they are skipped. It is possible
-that there is no meta information at all.
+features byte are set. Otherwise they are skipped. It is possible that
+there is no meta information at all. There is one exception to this
+rule: If the element is of type collection, the id is always present.
 
 Meta information consists of the id, the version and the timestamp
 (seconds since 1970) of the element, the id of the latest changeset
@@ -343,9 +350,9 @@ and uid and username of the user who did the most recent change.
 
 ## Example
 
-*Note: This example is slightly outdated: The `version byte` and the
-`typetable` are missing and it does not contain an example for a
-collection.*
+*Note: This example is outdated: The `version byte` and the
+`typetable` are missing; it does not contain an example for a
+collection and there is no member information.*
 
 The following hexdump is taken from [example OMA file](/example.oma),
 which is a converted version of the artifical OSM file

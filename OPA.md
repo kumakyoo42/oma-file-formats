@@ -2,9 +2,9 @@
 
 ***Note: [Oma](https://github.com/kumakyoo42/Oma) software (including
 additional programs like [Opa](https://github.com/kumakyoo42/Opa) and
-libraries) and [related file
-formats](https://github.com/kumakyoo42/oma-file-formats) are currently
-experimental and subject to change without notice.***
+[libraries](https://github.com/kumakyoo42/OmaLibJava)) and related
+file formats are currently experimental and subject to change without
+notice.***
 
 ## General Structure
 
@@ -13,7 +13,7 @@ after a hash (#), including the hash, is also ignored. Lines can be
 indented for better readability. The first line should start with
 `#OPA` for better recognition of OPA files.
 
-Except for tag pairs, each line consists of a name followed by a colon
+Most lines consists of a name followed by a colon
 (without whitespace in between), which may be followed by some other
 information, depending on the name.
 
@@ -29,10 +29,14 @@ fractional digits. Longitude is given before latitude.
       <chunk>*
 
     <header> ::=
+      "Version:" <number>
       "Features:" <features list>
       "BoundingBox:" <bounding box>
       <typetable>
       "Chunks:" <number>
+
+The first item is the version of the Oma file format. As long, as this
+format is in experimental stage, this is always 0.
 
 The `<features list>` is a comma separated list of zero or more of the
 following words: `zipped`, `id`, `version`, `timestamp`, `changeset`,
@@ -61,7 +65,7 @@ The last item in the head is the number of chunks given in the file.
     <key with values> ::=
       "Key:" <key>
       "Values:" <number>
-      <value>*
+        <value>*
 
 The typetable consists of the number of types, followed by an entry
 for each type. Each entry consists of the type, the number of keys and
@@ -120,6 +124,7 @@ value, the value of the slice must be a minus sign.
       "Element:"
       <geometry>
       <tags>
+      <members>
       <meta information>
 
     <geometry> (Node) ::=
@@ -136,21 +141,8 @@ value, the value of the slice must be a minus sign.
         <hole>*
 
     <geometry> (Collection) ::=
-      "Nodes:" <number>
-      (
-        "Role:" <role>
-        <geometry> (Node)
-      )*
-      "Ways:" <number>
-      (
-        "Role:" <role>
-        <geometry> (Way)
-      )*
-      "Areas:" <number>
-      (
-        "Role:" <role>
-        <geometry> (Area)
-      )*
+      "ID:" <number>
+      "BoundingBox:" <bounding box>
 
     <hole> ::=
       "Hole:"
@@ -163,6 +155,13 @@ value, the value of the slice must be a minus sign.
     <tag value pair> ::=
       <key> " = " <value>
 
+    <members> ::=
+      "Members:" <number>
+        <member>*
+
+    <member> ::=
+      <number> <number> <string>
+
     <meta information> ::=
       "ID:" <number>
       "Version:" <number>
@@ -171,8 +170,8 @@ value, the value of the slice must be a minus sign.
       "User:" <number> "(" <name> ")"
 
 Which geometry is used depends on the type of the surrounding chunk.
-Ways, areas and collections contain lists of coordinates. In this case
-each coordinate is written on a single line.
+Ways and areas contain lists of coordinates. In this case each
+coordinate is written on a single line.
 
 Tags are listed, one after another, each on a separate line. Key and
 value must be separated by a space followed by an equals sign,
@@ -188,12 +187,17 @@ following characters are escaped by a backslash:
 | =         | \\=             |
 | \         | \\\             |
 
-Metadata is only included if listed in the `<features list>`.
+Members are saved as id, followed by the position and the role. The
+role is escaped like keys and tags. It may contain spaces.
+
+Metadata is only included if listed in the `<features list>`, with the
+exception of IDs of collections, where the ID is always present (and
+repeated before the bounding box).
 
 ## Example
 
-*Note: This example is slightly outdated: The `version byte` and the
+*Note: This example is outdated: The `version byte` and the
 `typetable` are missing and it does not contain an example for a
-collection.*
+collection, nor are there members.*
 
 See [example.opa](/example.opa).

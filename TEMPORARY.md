@@ -2,9 +2,9 @@
 
 ***Note: [Oma](https://github.com/kumakyoo42/Oma) software (including
 additional programs like [Opa](https://github.com/kumakyoo42/Opa) and
-libraries) and [related file
-formats](https://github.com/kumakyoo42/oma-file-formats) are currently
-experimental and subject to change without notice.***
+[libraries](https://github.com/kumakyoo42/OmaLibJava)) and related
+file formats are currently experimental and subject to change without
+notice.***
 
 ***Note: The file formats described in this file are given for
 completeness. They are subject to change without notice and they even
@@ -17,10 +17,8 @@ with care!***
 
 The temporary file `tmp1` is the result of the first of the three
 conversion steps in Oma. In this step ids of various elements are
-replaced by the coordinates of these elements. During this process the
-tmp1 file may be read in several times and rewritten in a modified
-version. In the final version there are no multipolygons (they are
-replaced by a sequence of areas).
+replaced by the coordinates of these elements and relations are split
+into ways, areas and collections.
 
 The format of tmp1 files is just a sequence of elements:
 
@@ -32,78 +30,82 @@ first byte.
 
     <element> (BoundingBox) ::=
       byte 'B'
+      <bounding box>
+
+    <element> (Node) ::=
+      byte 'N'
+      <meta>
+      <coord>
+      <tags>
+      <members>
+
+    <element> (Way) ::=
+      byte 'W'
+      <meta>
+      smallint count
+      <coords>*
+      <tags>
+      <members>
+
+    <element> (Area) ::=
+      byte 'A'
+      <meta>
+      smallint count
+      <coords>*
+      smallint count
+      <hole>*
+      <tags>
+      <members>
+
+    <element> (Collection) ::=
+      byte 'C'
+      <meta> (id always present)
+      <bounding box>
+      <tags>
+      <members>
+
+    <hole> ::=
+      smallint count
+      <coords>*
+
+    <bounding box>
       int minlon
       int minlat
       int maxlon
       int maxlat
 
-    <element> (Node) ::=
-      byte 'N'
-      <meta>
-      int count of tags
-      <coord>
+    <tags> ::=
+      smallint count
       <key-value pair>*
 
-    <element> (Way) ::=
-      byte 'W'
-      <meta>
-      int count of nodes
-      int count of tags
-      <coords>*
-      <key-value pair>*
+    <members> ::=
+      smallint count
+      <member>
 
-    <element> (Multipolygon) ::=
-      byte 'M'
-      <meta>
-      int count of tags
-      <key-value pair>*
-      int count of members
-      <member>*
-
-    <element> (Area) ::=
-      byte 'A'
-      <meta>
-      int count of nodes
-      <coords>*
-      int count of holes
-      <hole>*
-
-      int count of tags
-      <key_value pair>*
-
-    <member> (not replaced) ::=
-      byte role ('o'|'i')
+    <member> ::=
       long id
-
-    <member> (replaced) ::=
-      byte role ('O'|'I')
-      int count of nodes
-      <coords>*
-
-    <hole> ::=
-      int count of nodes
-      <coords>*
+      string role
+      smallint position
 
 The meta data is stored similar to the way they are stored in Oma
-files, but the version is saved as an int and the username is saved in
-a slightly different version of UTF8, which is used by Javas
-DataInput- and DataOutputStreams. Entries, that are not needed later
-(because the corresponding bits in the features byte of the Oma file
-are not set), are omitted.
+files. With the exception of the id of collections, entries, that are
+not needed later (because the corresponding bits in the features byte
+of the Oma file are not set), are omitted.
 
     <meta> ::=
       long     id
-      int      version
+      smallint version
       long     timestamp
       long     changeset
       int      uid
-      utf8     username
+      string   username
 
-Coordinates can take to different appearances: They are either stored
+Coordinates can take two different appearances: They are either stored
 as two ints or, in case of ways and when not known, as the id of the
 node which contains the coordinates. To avoid confusion,
 `0x7f00000000000000` is added to the node id. This ensures, that node id
-and lon/lat coordinates cannot be confused.
+and lon/lat coordinates cannot be confused. Coordinates are never
+delta encoded.
 
     <coords> ::=
       int lon
@@ -112,12 +114,11 @@ and lon/lat coordinates cannot be confused.
     <coords> ::=
       long node_id
 
-Key-value pairs are also stored slightly different to the version in
-oma files: Again Javas UTF8 version is used.
+Key-value pairs are stored as two strings.
 
     <key-value pair> ::=
-      utf8 key
-      utf8 value
+      string key
+      string value
 
 ## tmp2
 
@@ -134,6 +135,55 @@ contain the number of elements followed by the elements. Elements are
 encoded the same way, they are encoded in Oma files. Delta encoding of
 coordinates is used and resetted at the beginning of every chunk.
 There is no compression.
+
+## Temporary file `n`
+
+    <n> ::=
+      <metadata with id>
+      int lon
+      int lat
+      <tags>
+
+## Temporary file `w`
+
+    <w> ::=
+      <metadata with id>
+      smallint count
+      <coord>*
+      <tags>
+
+## Temporary file `rw`
+
+    <rw> ::=
+      <metadata with id>
+      smallint count
+      <member>*
+      <tags>
+
+## Temporary file `ra`
+
+    <ra> ::=
+      <metadata with id>
+      smallint count
+      <member>*
+      <tags>
+
+## Temporary file `rc`
+
+    <rc> ::=
+      <metadata with id>
+      smallint count
+      <member>*
+      <tags>
+
+## Temporary file `nodes`
+
+    <nodes> ::= <node>*
+
+    <node> ::=
+      long id
+      int lon
+      int lat
 
 ## tmp.nodes
 

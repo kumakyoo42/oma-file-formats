@@ -2,9 +2,9 @@
 
 ***Note: [Oma](https://github.com/kumakyoo42/Oma) software (including
 additional programs like [Opa](https://github.com/kumakyoo42/Opa) and
-libraries) and [related file
-formats](https://github.com/kumakyoo42/oma-file-formats) are currently
-experimental and subject to change without notice.***
+[libraries](https://github.com/kumakyoo42/OmaLibJava)) and related
+file formats are currently experimental and subject to change without
+notice.***
 
 This repository contains (more or less normative) descriptions of the
 file formats used in Oma software:

@@ -1,5 +1,7 @@
 #OPA: from ../oma-file-formats/example.oma
 
+# Please note: This example is slightly outdated!
+
 Features: zipped, id
 BoundingBox: 7.868666, 47.99977, 7.869138, 48.000043
 Chunks: 4
