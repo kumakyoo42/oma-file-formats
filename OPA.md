@@ -142,11 +142,18 @@ value, the value of the slice must be a minus sign.
 
     <geometry> (Collection) ::=
       "ID:" <number>
-      "BoundingBox:" <bounding box>
+      "Slices:" <number>
+        <slice definition>*
 
     <hole> ::=
       "Hole:"
         <coordinate>*
+
+    <slice definition> ::=
+      "Type:" <type>
+      "BoundingBox:" <bounding box>
+      "Key: " <string>
+      "Value: " <string>
 
     <tags> ::=
       "Tags:"

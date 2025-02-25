@@ -60,7 +60,7 @@ first byte.
     <element> (Collection) ::=
       byte 'C'
       <meta> (id always present)
-      <bounding box>
+      smallint 0
       <tags>
       <members>
 

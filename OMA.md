@@ -281,7 +281,8 @@ meta information.
       <hole>*
 
     <geometry> (collection) ::=
-      <bounding box>
+      smallint count
+      <slice definition>*
 
     <hole> ::=
       smallint count
@@ -290,6 +291,12 @@ meta information.
     <coord> ::=
       delta lon
       delta lat
+
+    <slice definition>
+      byte <type>
+      <bounding box>
+      string key
+      string value
 
 The geometry of a node is just its coordinate pair.
 
@@ -302,8 +309,10 @@ preceeded by the count of these pairs. Divergent of OSM convention the
 starting point of this ring is not repeated at the end. Holes are
 saved the same way.
 
-A collection is just a bounding box. All elements of the collection
-are inside of this bounding box, unless no bounding box is given.
+The geometry of a collection isn't really a geometry. Instead it's a
+list of slices. This list defines the slices, where the members of the
+collection can be found. If the list is empty, this information is
+missing. In this case, the members can be in any slice.
 
     <tags> ::=
       smallint count
