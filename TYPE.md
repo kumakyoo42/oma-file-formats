@@ -17,7 +17,7 @@ with 0, 2, 4 or 6 spaces at the beginning of each line. Empty lines
 are ignored.
 
 Lines without spaces at the beginning start a section (`NODE`, `WAY`,
-`LIFECYCLE`).
+`COLLECTION`, `LIFECYCLE`).
 
 In the `NODE` section all lines with 2 spaces form a list of keys, that
 will be used for blocks. After every key an arbitrary number of values
@@ -31,6 +31,8 @@ spaces. Entries with 4 spaces can be `IS_AREA`, `EXCEPTIONS`, `WAY` and
 are considered to be areas. If not present, all values are considered
 to be ways. The `EXCEPTIONS` section lists values, where this assumption
 is negated. `WAY` and `AREA` sections list just the values.
+
+The `COLLECTION` section is identical to the `NODE` section.
 
 The `LIFECYCLE` section contains a list of lifecycle-prefixes, every one
 preceded by 2 spaces, but without colon.
@@ -83,6 +85,18 @@ Entries with key `highway` are considered ways (`IS_AREA` is absent).
 There are three exceptions, namely `rest_area`, `services` and
 `platform`. Common values are `service`, `track`, `footway` and
 several more.
+
+    COLLECTION
+      route
+        bus
+        hiking
+        [...]
+      public_transport
+
+Keys of collections are `route` and `public_transport` (the
+information in the `type` tag is not used). `route` has the common
+values `bus`, `hiking` and so on, `public_transport` has no common
+values.
 
     LIFECYCLE
       abandoned
