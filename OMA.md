@@ -307,7 +307,9 @@ An area consists of an outer ring and optionally an arbitrary number
 of holes. The outer ring is saved as a list of coordinate pairs
 preceeded by the count of these pairs. Divergent of OSM convention the
 starting point of this ring is not repeated at the end. Holes are
-saved the same way.
+saved the same way. The pairs of coordinates of the outer ring must be
+stored in clockwise order, the pairs of coordinates in the inner ring
+must be stored in counterclockwise order.
 
 The geometry of a collection isn't really a geometry. Instead it's a
 list of slices. This list defines the slices, where the members of the
