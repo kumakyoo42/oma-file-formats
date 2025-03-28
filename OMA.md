@@ -38,7 +38,8 @@ is small enough, that is if it is between -32767 and 32767 inclusive.
 In this case, the difference is stored as a `short`. Larger numbers
 are stored as the value -32768 (as `short`) followed by the number
 (not the difference) as an `int`. The delta encoding starts anew at
-each slice with both coordinates initialised to 0.
+each slice with both coordinates initialised to 0. Missing coordinates
+are stored as twice the value 0x7fffffff.
 
 Bounding boxes are stored as four `ints`: the coordinates of the lower
 left corner followed by the coordinates of the upper right corner of
