@@ -103,16 +103,18 @@ The features byte is a bitfield, identifying some features of the
 file. The bits of the features byte are described in the following
 table:
 
-| Bit | Value | Meaning                           |
-|-----|-------|-----------------------------------|
-|   0 |     1 | all slices are compressed         |
-|   1 |     2 | elements contain id               |
-|   2 |     4 | elements contain version          |
-|   3 |     8 | elements contain timestamp        |
-|   4 |    16 | elements contain changeset        |
-|   5 |    32 | elements contain user information |
-|   6 |    64 | each element is added only once   |
-|   7 |   128 | *reserved, must be 0*             |
+| Bit | Value | Meaning                                     |
+|-----|-------|---------------------------------------------|
+| 0/1 |     0 | no compression                              |
+|     |     1 | compression with deflate algorithm          |
+|     |   2-3 | *reserved for other compression algorithms* |
+|   2 |     4 | elements contain id                         |
+|   3 |     8 | elements contain version                    |
+|   4 |    16 | elements contain timestamp                  |
+|   5 |    32 | elements contain changeset                  |
+|   6 |    64 | elements contain user information           |
+|   7 |   128 | each element is added only once             |
+
 
 All elements of the file must be completely inside the bounding box,
 unless no bounding box is given.
