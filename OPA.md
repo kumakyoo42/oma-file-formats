@@ -184,15 +184,24 @@ Tags are listed, one after another, each on a separate line. Key and
 value must be separated by a space followed by an equals sign,
 followed by a space.
 
-In keys and values of tags, as well as in roles in a collection, the
-following characters are escaped by a backslash:
+Keys and values of tags, as well as roles in collections and usernames
+sometimes need to be escapes. If the string is empty or if the first
+or the last character is a space or a quote, the string is surrounded
+by quotes. Furthermore some characters are escaped by a backslash:
 
-| character | escape sequence |
-| --------- | --------------- |
-| #         | \\x             |
-| *newline* | \\n             |
-| =         | \\=             |
-| \         | \\\             |
+| character           | escape sequence |
+| ------------------- | --------------- |
+| \                   | \\b             |
+| #                   | \\x             |
+| *newline*           | \\n             |
+| *return*            | \\r             |
+| =                   | \\e             |
+| *control character* | \\u*xxxx*       |
+
+Control characters are currently all characters with code from 0 to 31
+and code 127. They are replaced by \\u followed by a four digit
+hexadecimal number. If it turns out that more control sequences cause
+problems, they will be added to this list in the future.
 
 Members are saved as id, followed by the position and the role. The
 role is escaped like keys and tags. It may contain spaces.
