@@ -1,58 +1,72 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <osm version="0.6" generator="osmconvert 0.8.10">
 	<bounds minlat="47.99977" minlon="7.868666" maxlat="48.000043" maxlon="7.869138"/>
-	<node id="25468" lat="47.9999337" lon="7.8690369"/>
-	<node id="25469" lat="47.999983" lon="7.8687752">
+	<node id="25357" lat="47.9999995" lon="7.8689093" timestamp="2025-06-29T11:22:33Z"/>
+	<node id="25468" lat="47.9999337" lon="7.8690369" timestamp="2025-06-29T11:22:33Z"/>
+	<node id="25469" lat="47.999983" lon="7.8687752" timestamp="2025-06-29T11:22:33Z">
 		<tag k="natural" v="tree"/>
 	</node>
-	<node id="25470" lat="47.9999872" lon="7.8687337"/>
-	<node id="25471" lat="47.9999668" lon="7.8688745">
+	<node id="25470" lat="47.9999872" lon="7.8687337" timestamp="2025-06-29T11:22:33Z"/>
+	<node id="25471" lat="47.9999668" lon="7.8688745" timestamp="2025-06-29T11:22:33Z">
 		<tag k="natural" v="rock"/>
 	</node>
-	<node id="25472" lat="47.99988" lon="7.8687716"/>
-	<node id="25473" lat="47.9998757" lon="7.8689623"/>
-	<node id="25474" lat="47.999925" lon="7.8688409">
+	<node id="25472" lat="47.99988" lon="7.8687716" timestamp="2025-06-29T11:22:33Z"/>
+	<node id="25473" lat="47.9998757" lon="7.8689623" timestamp="2025-06-29T11:22:33Z"/>
+	<node id="25474" lat="47.999925" lon="7.8688409" timestamp="2025-06-29T11:22:33Z">
 		<tag k="information" v="guidepost"/>
 		<tag k="tourism" v="information"/>
 	</node>
-	<node id="25475" lat="48.0000241" lon="7.8688982"/>
-	<node id="25476" lat="47.9999615" lon="7.8689549"/>
-	<node id="25477" lat="48.0000206" lon="7.8687968"/>
-	<node id="25478" lat="47.999932" lon="7.8687542"/>
-	<node id="25479" lat="47.9998719" lon="7.8689334"/>
-	<node id="25480" lat="47.9999629" lon="7.8688094"/>
-	<node id="25481" lat="47.9999235" lon="7.8690999"/>
-	<node id="25482" lat="47.9998736" lon="7.8688278">
+	<node id="25475" lat="48.0000241" lon="7.8688982" timestamp="2025-06-29T11:22:33Z"/>
+	<node id="25476" lat="47.9999615" lon="7.8689549" timestamp="2024-01-20T08:07:06Z"/>
+	<node id="25477" lat="48.0000206" lon="7.8687968" timestamp="2025-06-29T11:22:33Z"/>
+	<node id="25478" lat="47.999932" lon="7.8687542" timestamp="2025-06-29T11:22:33Z"/>
+	<node id="25479" lat="47.9998719" lon="7.8689334" timestamp="2025-06-29T11:22:33Z"/>
+	<node id="25480" lat="47.9999629" lon="7.8688094" timestamp="2025-06-29T11:22:33Z"/>
+	<node id="25481" lat="47.9999235" lon="7.8690999" timestamp="2025-06-29T11:22:33Z"/>
+	<node id="25482" lat="47.9998736" lon="7.8688278" timestamp="2023-10-29T12:01:59Z">
 		<tag k="denotation" v="natural_monument"/>
 		<tag k="leaf_cycle" v="evergreen"/>
 		<tag k="leaf_type" v="needleleaved"/>
 		<tag k="natural" v="tree"/>
 	</node>
-	<node id="25483" lat="47.9999049" lon="7.8688829"/>
-	<node id="25484" lat="47.9998982" lon="7.8689234"/>
-	<node id="25485" lat="47.9999849" lon="7.8688326"/>
-	<node id="25486" lat="47.9997914" lon="7.8688593"/>
-	<node id="25487" lat="47.9999281" lon="7.8689638">
+	<node id="25483" lat="47.9999049" lon="7.8688829" timestamp="2023-10-29T12:01:59Z"/>
+	<node id="25484" lat="47.9998982" lon="7.8689234" timestamp="2025-06-29T11:22:33Z"/>
+	<node id="25485" lat="47.9999849" lon="7.8688326" timestamp="2025-06-29T11:22:33Z"/>
+	<node id="25486" lat="47.9997914" lon="7.8688593" timestamp="2025-06-29T11:22:33Z"/>
+	<node id="25487" lat="47.9999281" lon="7.8689638" timestamp="2025-06-29T11:22:33Z">
 		<tag k="natural" v="tree"/>
 	</node>
-	<node id="25488" lat="47.9998511" lon="7.8689066"/>
-	<node id="25489" lat="47.9999105" lon="7.8689481"/>
-	<node id="25490" lat="47.9998817" lon="7.8687201"/>
-	<node id="25491" lat="47.9998332" lon="7.8688273"/>
-	<node id="25492" lat="47.9999018" lon="7.8689843"/>
-	<way id="696">
+	<node id="25488" lat="47.9998511" lon="7.8689066" timestamp="2023-10-29T12:01:59Z"/>
+	<node id="25489" lat="47.9999105" lon="7.8689481" timestamp="2025-06-29T11:22:33Z"/>
+	<node id="25490" lat="47.9998817" lon="7.8687201" timestamp="2025-06-29T11:22:33Z"/>
+	<node id="25491" lat="47.9998332" lon="7.8688273" timestamp="2024-01-20T08:07:06Z"/>
+	<node id="25492" lat="47.9999018" lon="7.8689843" timestamp="2025-06-29T11:22:33Z"/>
+	<way id="584" timestamp="2024-01-20T08:07:06Z">
+		<nd ref="25491"/>
+		<nd ref="25488"/>
+		<nd ref="25483"/>
+		<nd ref="25476"/>
+		<tag k="highway" v="footway"/>
+	</way>
+	<way id="586" timestamp="2025-06-29T11:22:33Z">
+		<nd ref="25476"/>
+		<nd ref="25357"/>
+		<tag k="highway" v="footway"/>
+	</way>
+	<way id="600" timestamp="2025-06-29T11:22:33Z">
+		<nd ref="25476"/>
+		<nd ref="25468"/>
+		<tag k="highway" v="footway"/>
+	</way>
+	<way id="696" timestamp="2025-06-29T11:22:33Z">
 		<nd ref="25485"/>
 		<nd ref="25480"/>
 		<nd ref="25478"/>
 		<nd ref="25472"/>
 		<nd ref="25491"/>
-		<nd ref="25488"/>
-		<nd ref="25483"/>
-		<nd ref="25476"/>
-		<nd ref="25468"/>
 		<tag k="highway" v="footway"/>
 	</way>
-	<way id="697">
+	<way id="697" timestamp="2025-06-29T11:22:33Z">
 		<nd ref="25477"/>
 		<nd ref="25470"/>
 		<nd ref="25490"/>
@@ -61,7 +75,7 @@
 		<nd ref="25475"/>
 		<nd ref="25477"/>
 	</way>
-	<way id="698">
+	<way id="698" timestamp="2025-06-29T11:22:33Z">
 		<nd ref="25489"/>
 		<nd ref="25484"/>
 		<nd ref="25479"/>
@@ -72,10 +86,18 @@
 		<tag k="natural" v="water"/>
 		<tag k="water" v="lake"/>
 	</way>
-	<relation id="59">
+	<relation id="59" timestamp="2025-06-29T11:22:33Z">
 		<member type="way" ref="697" role="outer"/>
 		<member type="way" ref="698" role="inner"/>
 		<tag k="landuse" v="meadow"/>
 		<tag k="type" v="multipolygon"/>
+	</relation>
+	<relation id="64" timestamp="2025-06-29T11:22:33Z">
+		<member type="way" ref="696" role=""/>
+		<member type="way" ref="584" role=""/>
+		<member type="way" ref="586" role=""/>
+		<member type="node" ref="25474" role="guidepost"/>
+		<tag k="route" v="example"/>
+		<tag k="type" v="route"/>
 	</relation>
 </osm>

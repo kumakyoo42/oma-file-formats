@@ -1,0 +1,36 @@
+NODE
+  natural
+    tree
+    peak
+    spring
+  tourism
+    information
+
+WAY
+  highway
+    WAY
+      service
+      track
+      footway
+  landuse
+    IS_AREA
+    AREA
+      meadow
+      farmland
+  natural
+    IS_AREA
+    EXCEPTIONS
+      tree_row
+    WAY
+      tree_row
+    AREA
+      water
+
+COLLECTION
+  route
+    bus
+    hiking
+    bicycle
+
+LIFECYCLE
+  disused
