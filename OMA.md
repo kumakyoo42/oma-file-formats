@@ -670,8 +670,8 @@ Uncompressed:
 
 Uncompressed:
 
-    +0000  80 00 04 b0 b0 99        longitude:
-    +0006  80 00 1c 9c 35 12        latitude:
+    +0000  80 00 04 b0 b0 99        longitude: 78688409
+    +0006  80 00 1c 9c 35 12        latitude: 479999250
     +000c  02                       2 tags
     +000d  07 74 6f 75 72 69 73 6d  key: 'tourism'
     +0015  0b 69 6e 66 6f 72 6d 61  value: 'information'
@@ -712,16 +712,16 @@ Uncompressed:
 Uncompressed:
 
     +0000  05                       outer of area has got 5 coordinates
-    +0001  80 00 04 b0 b6 33        longitude: 7.8689481
-    +0007  80 00 1c 9c 34 2a        latitude: 47.9999105
-    +000d  ff 24                    longitude: 7.8689234
-    +000f  fe fb                    latitude: 47.9998982
+    +0001  80 00 04 b0 b6 33        longitude: 7.8689843
+    +0007  80 00 1c 9c 34 2a        latitude: 47.9999018
+    +000d  ff 24                    longitude: 7.8689623
+    +000f  fe fb                    latitude: 47.9998757
     +0011  fe df                    longitude: 7.8689334
     +0013  ff da                    latitude: 47.9998719
-    +0015  ff 9c                    longitude: 7.8689623
-    +0017  01 07                    latitude: 47.9998757
-    +0019  00 f7                    longitude: 7.8689843
-    +001b  00 7b                    latitude: 47.9999018
+    +0015  ff 9c                    longitude: 7.8689234
+    +0017  01 07                    latitude: 47.9998982
+    +0019  00 f7                    longitude: 7.8689481
+    +001b  00 7b                    latitude: 47.9999105
     +001d  00                       no holes
     +001e  03                       3 tags
     +001f  07 6e 61 74 75 72 61 6c  key: 'natural'
@@ -849,18 +849,18 @@ Uncompressed:
 Uncompressed:
 
     +0000  06                       outer of area has 6 coordinates
-    +0001  80 00 04 b0 b2 d6        longitude: 7.8687968
-    +0007  80 00 1c 9c 38 f1        latitude: 48.0000206
-    +000d  07 e1                    longitude: 7.8687337
-    +000f  fc 12                    latitude: 47.9999872
-    +0011  f6 9a                    longitude: 7.8687201
-    +0013  fa d7                    latitude: 47.9998817
-    +0015  fa 90                    longitude: 7.8688593
-    +0017  03 87                    latitude: 47.9997914
-    +0019  00 88                    longitude: 7.8690999
-    +001b  04 1f                    latitude: 47.9999235
-    +001d  02 77                    longitude: 7.8688982
-    +001f  01 4e                    latitude: 48.0000241
+    +0001  80 00 04 b0 b2 d6        longitude: 7.8688982
+    +0007  80 00 1c 9c 38 f1        latitude: 48.0000241
+    +000d  07 e1                    longitude: 7.8690999
+    +000f  fc 12                    latitude: 47.9999235
+    +0011  f6 9a                    longitude: 7.8688593
+    +0013  fa d7                    latitude: 47.9997914
+    +0015  fa 90                    longitude: 7.8687201
+    +0017  03 87                    latitude: 47.9998817
+    +0019  00 88                    longitude: 7.8687337
+    +001b  04 1f                    latitude: 47.9999872
+    +001d  02 77                    longitude: 7.8687968
+    +001f  01 4e                    latitude: 48.0000206
     +0021  01                       there is one hole
     +0022  05                       hole has 5 coordinates
     +0023  05 e9                    longitude: 7.8689481
